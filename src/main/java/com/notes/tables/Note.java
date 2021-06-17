@@ -1,4 +1,4 @@
-package com.notes.notes;
+package com.notes.tables;
 
 
 import java.util.Date;
@@ -10,16 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- *
- * @author Kasyap
- */
 @Entity
 @Table(name="note")
 public class Note {
@@ -31,6 +23,7 @@ public class Note {
     
     @ManyToOne
     @JoinColumn(name = "uid")
+   // @Autowired
     private User user;
     
     Note(){}

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.notes.notes;
+package com.notes.tables;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,10 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- *
- * @author Kasyap
- */
 @Entity
 @Table(name="user")
 public class User {
@@ -25,9 +21,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int uid;
     private String first_name,last_name,email,password;
+    
     @OneToMany(mappedBy = "user")
     private Set<Note> notes = new HashSet<>();
-    User(){}
+    User(){
+    	
+    }
 
     public User(int uid, String first_name, String last_name, String email, String password) {
         this.uid = uid;
