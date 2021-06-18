@@ -5,8 +5,8 @@
  */
 package com.notes.tables;
 
-import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,17 +23,21 @@ public class User {
     private String first_name,last_name,email,password;
     
     @OneToMany(mappedBy = "user")
-    private Set<Note> notes = new HashSet<>();
-    User(){
+    private Set<Note> notes;
+    
+ 
+    public User(){
     	
     }
 
-    public User(int uid, String first_name, String last_name, String email, String password) {
+    public User(int uid, String first_name, String last_name, 
+    		String email, String password,Set<Note> notes) {
         this.uid = uid;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.password = password;
+        this.notes = notes;
     }
 
     public int getUid() {
@@ -75,5 +79,13 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public Set<Note> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(Set<Note> notes) {
+		this.notes = notes;
+	}
     
 }

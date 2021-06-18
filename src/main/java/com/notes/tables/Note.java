@@ -1,7 +1,6 @@
 package com.notes.tables;
 
 
-import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name="note")
@@ -25,16 +22,28 @@ public class Note {
     @JoinColumn(name = "uid")
    // @Autowired
     private User user;
-    
-    Note(){}
+//    
+//    public User getUser() {
+//		return user;
+//	}
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
 
-    public Note(int note_id, String title, String content, String created_date, String remainder_date, boolean remainder) {
+	Note(){
+		super();
+	}
+
+    public Note(int note_id, String title, String content, 
+    		String created_date, String remainder_date, boolean remainder) {
         this.note_id = note_id;
         this.title = title;
         this.content = content;
         this.created_date = created_date;
         this.remainder_date = remainder_date;
         this.remainder = remainder;
+        //this.user = user;
     }
 
     public void setNote_id(int note_id) {
