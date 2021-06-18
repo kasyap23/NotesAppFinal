@@ -7,11 +7,22 @@ import org.springframework.stereotype.Component;
 
 import com.notes.tables.User;
 
-@Component
-public class LoginJson {
-	String message="";
-	Boolean success=false;
-	List<User> data = new ArrayList<User>();
+
+public class JsonResponse {
+
+
+	
+	Boolean success;
+        String message;
+	List data;
+
+    public JsonResponse(Boolean success, String message, List data) {
+        this.success = success;
+        this.message = message;
+        this.data = data;
+    }
+        
+ 
 	
 	public String getMessage() {
 		return message;
@@ -28,8 +39,8 @@ public class LoginJson {
 	public ArrayList<User> getData() {
 		return (ArrayList<User>) data;
 	}
-	public void setData(Iterable<User> iterable) {
-		this.data = (List<User>) iterable;
+	public void setData(Iterable iterable) {
+		this.data = (List) iterable;
 	}
 	
 	

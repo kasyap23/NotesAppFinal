@@ -22,16 +22,12 @@ public class Note {
     @JoinColumn(name = "uid")
    // @Autowired
     private User user;
-//    
-//    public User getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
+    
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-	Note(){
+	public Note(){
 		super();
 	}
 

@@ -10,6 +10,7 @@ import com.notes.repos.NoteRepository;
 import com.notes.repos.UserRepository;
 import com.notes.tables.Note;
 import com.notes.tables.User;
+import java.util.List;
 
 @Service
 public class ServiceClass {
@@ -18,9 +19,20 @@ public class ServiceClass {
 	UserRepository userRepo;
 	@Autowired
 	NoteRepository noteRepo;
-	
-	
-	
+        
+        public User getUserbyEmail(String email)
+        {
+            Iterable<User> users = this.userRepo.findAll();
+            for(User u: users)
+            {
+                if(u.getEmail().equals(email))
+                {
+                    return u;
+                }
+            }
+            return null;
+            
+        }
 	public void delete(int uid, int nid) {
 		User user = userRepo.findById(uid).get();
 		Set<Note> notes = user.getNotes();
@@ -50,7 +62,7 @@ public class ServiceClass {
 			throw new Exception("User not found");  
 		}  
 		User userData=userOptional.get(); 
-		//note.setUser(userData);
+		note.setUser(userData);
 		noteRepo.save(note);  
 		
 	}
