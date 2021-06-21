@@ -6,21 +6,22 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.notes.repos.NoteRepository;
-import com.notes.repos.UserRepository;
+import com.notes.repository.NoteRepository;
+import com.notes.repository.UserRepository;
 import com.notes.tables.Note;
 import com.notes.tables.User;
 import java.util.List;
 
 @Service
-public class ServiceClass {
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepo;
 	@Autowired
 	NoteRepository noteRepo;
         
-        public User getUserbyEmail(String email)
+        @Override
+        public User getUserByEmail(String email)
         {
             Iterable<User> users = this.userRepo.findAll();
             for(User u: users)
@@ -33,6 +34,7 @@ public class ServiceClass {
             return null;
             
         }
+        @Override
 	public void delete(int uid, int nid) {
 		User user = userRepo.findById(uid).get();
 		Set<Note> notes = user.getNotes();
@@ -44,22 +46,21 @@ public class ServiceClass {
 		}
 		
 	}
+        @Override
 	public Set<Note> getNotesById(int uid) {
 	
 		User user = userRepo.findById(uid).get();
 		Set<Note> notes = user.getNotes();
-//		
-//		for(Note n :notes) {
-//			System.out.println(n.getContent()+" "+n.getCreated_date()+" "+n.getNote_id());
-//		}
+
 		return notes;
 	
 	}
-	public void saveOrUpdate(Note note, int uid) throws Exception {
+        @Override
+	public void saveOrUpdate(Note note, int uid) {
 		Optional<User> userOptional = userRepo.findById(uid);
 		if(!userOptional.isPresent())  
 		{  
-			throw new Exception("User not found");  
+			return;  
 		}  
 		User userData=userOptional.get(); 
 		note.setUser(userData);

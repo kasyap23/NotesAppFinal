@@ -1,6 +1,7 @@
 package com.notes.controllers;
 
 import com.google.gson.JsonObject;
+import com.notes.jwt.JwtTokenProvider;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +13,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.notes.repos.UserRepository;
-import com.notes.services.ServiceClass;
+import com.notes.repository.UserRepository;
+//import com.notes.services.ServiceClass;
+import com.notes.services.UserService;
 import com.notes.tables.Note;
 import com.notes.tables.User;
+import java.security.Principal;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import org.springframework.context.annotation.Bean;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @RestController
@@ -28,41 +39,73 @@ public class ClassController {
 
 	@Autowired
 	UserRepository repo;
-	@Autowired
-	ServiceClass userService;
-
-        
-        @PostMapping("/login")
-        public ResponseEntity login(@RequestBody User user)
+	@Autowired 
+	UserService userService;
+        @Autowired
+        JwtTokenProvider jwtTokenProvider;
+        @Bean
+        PasswordEncoder encoder()
         {
-           
-            User userDetails = userService.getUserbyEmail(user.getEmail());
-            if(userDetails==null)
+            return new BCryptPasswordEncoder();
+        }
+
+        @GetMapping("/test")
+        public String test()
+        {
+            return "test";
+        }
+        
+        @GetMapping("/signin")
+        public ResponseEntity login(Principal principal)
+        {
+
+
+//            User userDetails = userService.getUserByEmail(user.getEmail());
+            if(principal==null)
             {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
-            if(userDetails.getPassword().equals(user.getPassword()))
-            {
-                try{
-                    Map<String,Object> map = new HashMap<>();
-                    map.put("uid",userDetails.getUid());
-                    map.put("first_name",userDetails.getFirst_name());
-                    map.put("last_name",userDetails.getLast_name());
-                    map.put("email",userDetails.getEmail());
-                    return new ResponseEntity(map,HttpStatus.OK);
-                }
-                catch(Exception e){}
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+
+//            if(encoder().matches(userDetails.getPassword(),user.getPassword()))
+//            {
                 
-            }
-           return new ResponseEntity(HttpStatus.FORBIDDEN);
-            
-            
+
+                      Map<String,Object> map = new HashMap<>();
+
+                    UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
+
+                    System.out.println(token.getName());
+
+                    User u = userService.getUserByEmail(token.getName());
+                    
+                    map.put("uid",u.getUid());
+                    map.put("first_name",u.getFirst_name());
+                    map.put("last_name",u.getLast_name());
+                    map.put("email",u.getEmail());
+
+                    
+                   System.out.println(u);
+                   System.out.println(new Date(System.currentTimeMillis()+1000));
+                   
+                   String JwtToken = jwtTokenProvider.generateToken(token);
+                   
+                   System.out.println("true");
+                    map.put("token",JwtToken);
+
+                    return new ResponseEntity(map,HttpStatus.OK);
+                
+//                catch(Exception e){
+//                    System.out.println(8);
+//                    System.out.println(e);
+//                }
+//                
+//                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                
         }
         @PostMapping("/register")
         public ResponseEntity register(@RequestBody User u)
         {
-            User tempUser = userService.getUserbyEmail(u.getEmail());
+            User tempUser = userService.getUserByEmail(u.getEmail());
             if(tempUser!=null)
             {
                 return new ResponseEntity(HttpStatus.FORBIDDEN);
@@ -70,6 +113,7 @@ public class ClassController {
             }
             try
             {
+                u.setPassword(encoder().encode(u.getPassword()));
                 this.repo.save(u);
                 return new ResponseEntity(HttpStatus.OK);
             }
@@ -88,7 +132,7 @@ public class ClassController {
 	private ResponseEntity getNotes(@PathVariable("uid") int uid)   
 	{  
             try{
-                Map<String,Object> map = new HashMap<>();
+                Map<String,Set> map = new LinkedHashMap<>();
                 map.put("notes", userService.getNotesById(uid));
 		return new ResponseEntity(map,HttpStatus.OK);
             }
@@ -137,11 +181,7 @@ public class ClassController {
 	
 	@RequestMapping(value = "/getAllUsers")
 	public ResponseEntity loginReturn() {
-//		LoginJson loginJson = new LoginJson();
-//		loginJson.setMessage("Hello Deepak");
-//		loginJson.setSuccess(true);
-//		loginJson.setData(this.repo.findAll());
-		//System.out.println(new Gson().toJson(loginJson).toString());
+
 		Map<String,Object> map = new HashMap<>();
                 map.put("data",this.repo.findAll());
 		return new ResponseEntity(map,HttpStatus.OK);
