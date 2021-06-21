@@ -39,7 +39,7 @@ public class JwtTokenProvider {
     private static String jwtTokenPrefix="Bearer";
     private static String jwtHeader="Authorization";
     
-    private static int jwtExpirationInMs=36000;
+    private static long jwtExpirationInMs=36000000;
 
     public JwtTokenProvider() {
         

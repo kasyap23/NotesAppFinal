@@ -1,9 +1,10 @@
-
+package com.notes;
 import com.notes.jwt.JwtAuthorizationFilter;
 import com.notes.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,22 +13,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.authentication.AuthenticationManager;
 
-///*
-// * To change this license header, choose License Headers in Project Properties.
-// * To change this template file, choose Tools | Templates
-// * and open the template in the editor.
-// */
-//package com.notes;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//
-///**
-// *
-// * @author Kasyap
-// */
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 @Configuration
 @EnableWebSecurity
 public class NotesSecurity extends WebSecurityConfigurerAdapter {
@@ -37,6 +32,8 @@ public class NotesSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtAuthorizationFilter jwtAuthorizationFilter;
     
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -46,23 +43,26 @@ public class NotesSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/signin","/register","/test").permitAll()
-                .anyRequest().fullyAuthenticated()
+                .antMatchers("/register","/authenticate").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .logout().permitAll()
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/api/user/logout", "POST"))
-                .and()
-                .formLogin().loginPage("/login").and()
-                .httpBasic().and()
-                .csrf().disable();
-
-        http.addFilter(new JwtAuthorizationFilter(authenticationManager(), tokenProvider));
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                
+        
+        http.addFilterBefore(jwtAuthorizationFilter,UsernamePasswordAuthenticationFilter.class);
+        
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+    @Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
     
 }

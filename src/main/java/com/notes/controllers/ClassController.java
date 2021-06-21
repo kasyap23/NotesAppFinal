@@ -3,6 +3,8 @@ package com.notes.controllers;
 import com.google.gson.JsonObject;
 import com.notes.jwt.JwtTokenProvider;
 import java.util.Set;
+import com.notes.services.*;
+import com.notes.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,18 +31,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.authentication.AuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+
 
 @RestController
 public class ClassController {
 
+        @Autowired
+        AuthenticationManager authenticationManager;
 	@Autowired
 	UserRepository repo;
 	@Autowired 
 	UserService userService;
+        @Autowired
+        MyUserDetailsService myUserDetailsService;
         @Autowired
         JwtTokenProvider jwtTokenProvider;
         @Bean
@@ -54,6 +65,38 @@ public class ClassController {
         {
             return "test";
         }
+        @PostMapping("authenticate")
+	public ResponseEntity createAuthenticationToken(@RequestBody User user) throws Exception {
+            UsernamePasswordAuthenticationToken UPAuthToken;
+		try{
+                    UPAuthToken = authenticate(user.getEmail(),user.getPassword());
+			
+		}
+		catch(Exception e){
+			System.out.println("Exception"+e);
+			throw new Exception(e.getMessage());
+		}
+		final MyUserDetails userDetails = myUserDetailsService.loadUserByUsername(user.getEmail());
+		final String token = jwtTokenProvider.generateToken(UPAuthToken);
+                 
+		return ResponseEntity.ok(new JwtResponseToken(token));
+	}
+	
+	private UsernamePasswordAuthenticationToken authenticate(String username, String password) throws Exception {
+            UsernamePasswordAuthenticationToken UPAuthToken;
+		try {
+                        UPAuthToken = new UsernamePasswordAuthenticationToken(username,password);
+			authenticationManager.authenticate(UPAuthToken);
+                        return UPAuthToken;
+                        
+		}
+		catch(DisabledException e) {
+			throw new Exception("USER_DISABLED",e);
+		}
+		catch(BadCredentialsException e) {
+			throw new Exception("INVALID_CREDENTIALS",e);
+		}
+	}
         
         @GetMapping("/signin")
         public ResponseEntity login(Principal principal)
@@ -128,62 +171,9 @@ public class ClassController {
 	}
 	
 	
-	@GetMapping("/notes/getNotes/{uid}")  
-	private ResponseEntity getNotes(@PathVariable("uid") int uid)   
-	{  
-            try{
-                Map<String,Set> map = new LinkedHashMap<>();
-                map.put("notes", userService.getNotesById(uid));
-		return new ResponseEntity(map,HttpStatus.OK);
-            }
-            catch(Exception e){}
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@PostMapping("/notes/{uid}/save")  
-	private ResponseEntity saveNotes(@RequestBody Note note,@PathVariable("uid") int uid) throws Exception   { 
-              try
-              {
-                    userService.saveOrUpdate(note,uid);  
-                    Map<String,Integer> map = new HashMap<>();
-                    map.put("note_id",note.getNote_id());
-                    return new ResponseEntity(map,HttpStatus.OK);
-              }
-              catch(Exception e){}
-              return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-	}  
-//	@PostMapping("/user/save")  
-//	private ResponseEntity saveUser(@RequestBody User user)   {  
-//		try
-//                {
-//                userService.saveUser(user);
-//                Map<String,Integer> map = new HashMap<String,Integer>();
-//                map.put("user_id",user.getUid());
-//		return new ResponseEntity(map,HttpStatus.OK);
-//                }
-//                catch(Exception e){}
-//                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
-//	}
- 
-	@DeleteMapping("/notes/delete/{uid}/{nid}")  
-	private ResponseEntity deleteNotes(@PathVariable("uid") int uid,@PathVariable("nid") int nid)   
-	{  
-		try
-                {
-		userService.delete(uid,nid);
-                return new ResponseEntity(HttpStatus.OK);
-                }
-                catch(Exception e){}
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-                
-	}  
-	
-	
-	@RequestMapping(value = "/getAllUsers")
-	public ResponseEntity loginReturn() {
 
-		Map<String,Object> map = new HashMap<>();
-                map.put("data",this.repo.findAll());
-		return new ResponseEntity(map,HttpStatus.OK);
-	}
+	
+
+
+
 }

@@ -6,18 +6,17 @@
 package com.notes.services;
 
 import com.notes.tables.Note;
-import com.notes.tables.User;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Kasyap
  */
 
-public interface UserService {
-    public User getUserByEmail(String email);
-
-   public void saveUser(User user);
-   public void deleteUser(User user);
+public interface NoteService {
+   public void delete(int uid,int nid);
+   public Set<Note> getNotesById(int uid);
+   public void saveOrUpdate(Note note,int uid);
     
 }

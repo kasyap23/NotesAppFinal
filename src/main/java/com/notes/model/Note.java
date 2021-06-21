@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.notes.tables;
+package com.notes.model;
 
 
 import java.io.Serializable;
@@ -25,8 +25,9 @@ public class Note implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
      @Getter @Setter private int note_id;
-     @Getter @Setter private String title,content,created_date,remainder_date;
-    @Getter @Setter boolean remainder;
+
+    @Getter @Setter private String title,content,created_date,remainder_date;
+ boolean remainder;
     
     @ManyToOne
     @JoinColumn(name = "uid")
@@ -44,6 +45,10 @@ public class Note implements Serializable {
         this.remainder_date = remainder_date;
         this.remainder = remainder;
         //this.user = user;
+    }
+    public int getNote_id()
+    {
+        return this.note_id;
     }
 
     

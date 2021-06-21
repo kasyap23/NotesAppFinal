@@ -27,14 +27,14 @@ public class MyUserDetailsService implements UserDetailsService{
     @Autowired
     private UserRepository userRepository;
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException 
+    public MyUserDetails loadUserByUsername(String email) throws UsernameNotFoundException 
     {
         User user = userRepository.getUserByEmail(email);
         if(user==null)
             return null;
-         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("user"));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),authorities);
+//         Set<GrantedAuthority> authorities = new HashSet<>();
+//        authorities.add(new SimpleGrantedAuthority("user"));
+        return new MyUserDetails(user);
     }
     
     

@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.notes.tables;
+package com.notes.model;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
@@ -35,7 +36,7 @@ public class User {
     @Column(nullable=false)
     private String first_name,last_name,password;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Note> notes;
 
     

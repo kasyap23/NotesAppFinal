@@ -14,24 +14,29 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 /**
  *
  * @author Kasyap
  */
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+@Component
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        System.out.println("--------------------------------------------");
-        System.out.println(path);
-        return "/test".equals(path);
-    }
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
+//    
+//    public JwtAuthorizationFilter(AuthenticationManager authenticationManager,JwtTokenProvider tokenProvider) {
+//        super(authenticationManager);
+//        jwtTokenProvider = tokenProvider;    
+//    }
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         Authentication authentication = jwtTokenProvider.authenticateToken(request);
+        
         if(authentication!=null && jwtTokenProvider.validateToken(request))
         {
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -39,14 +44,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request,response); 
          
     }
-    private JwtTokenProvider jwtTokenProvider;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager,JwtTokenProvider tokenProvider) {
-        super(authenticationManager);
-        jwtTokenProvider = tokenProvider;
-        
-        
-    }
-    
     
 }

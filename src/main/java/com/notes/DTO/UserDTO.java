@@ -3,12 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javax;
+package com.notes.DTO;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author Kasyap
  */
-public class json {
-    
+@Getter @Setter
+public class UserDTO {
+    private int uid;
+    private String first_name,last_name,email;
 }
