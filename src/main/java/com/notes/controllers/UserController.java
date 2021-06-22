@@ -20,16 +20,16 @@ import org.springframework.web.bind.annotation.*;
  * @author Kasyap
  */
 @RestController
-@RequestMapping(value = "/users",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/users")
 public class UserController {
     @Autowired
     UserRepository userRepository;
     @Autowired
     UserService userService;
 
-    @RequestMapping( "/save")
+    @RequestMapping(value = "/save",method=RequestMethod.POST,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createUser(@RequestBody User user)
     {
         System.out.println("Post Enter");
@@ -43,6 +43,9 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
     @GetMapping("/get/{email}")
+    @RequestMapping(value = "/get/{email}",
+                    method=RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUser(@PathVariable("email") String email)
     {
         if(email==null)
@@ -53,6 +56,7 @@ public class UserController {
         return new ResponseEntity(userDTO,HttpStatus.OK);
         
     }
+    
     @DeleteMapping("/delete/{email}")
     public ResponseEntity<?> deleteUser(@PathVariable("email")String email)
     {
@@ -60,7 +64,11 @@ public class UserController {
         userService.deleteUser(user);
         return new ResponseEntity(HttpStatus.OK);
     }
-    @PutMapping("/update/{email}")
+    
+    @RequestMapping(value = "/update/{email}",
+        method=RequestMethod.PUT,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateUser(@PathVariable("email") String email,@RequestBody User newUser)
     {
         User oldUser = userService.getUserByEmail(email);

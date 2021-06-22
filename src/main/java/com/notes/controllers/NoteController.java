@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,7 +29,9 @@ public class NoteController {
     @Autowired
     NoteService noteService;
     
-    @PostMapping("/save/{uid}")
+    @RequestMapping(value = "/save/{uid}",method=RequestMethod.POST,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createNote(@PathVariable("uid") int uid,@RequestBody Note note)
     {
         noteService.saveOrUpdate(note,uid);
@@ -41,7 +44,9 @@ public class NoteController {
         Set<Note> notes = noteService.getNotesById(uid);
         return new ResponseEntity(notes,HttpStatus.OK);
     }
-    @PutMapping("/update/{uid}")
+    @RequestMapping(value = "/update/{uid}",method=RequestMethod.PUT,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateNotes(@PathVariable("uid") int uid,@RequestBody Note note)
     {
         noteService.saveOrUpdate(note, uid);

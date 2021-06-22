@@ -82,52 +82,6 @@ public class ClassController {
         }
     }
 
-    @GetMapping("/signin")
-    public ResponseEntity login(Principal principal) {
-
-
-//            User userDetails = userService.getUserByEmail(user.getEmail());
-        if (principal == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-
-//            if(encoder().matches(userDetails.getPassword(),user.getPassword()))
-//            {
-
-
-        Map<String, Object> map = new HashMap<>();
-
-        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
-
-        System.out.println(token.getName());
-
-        User u = userService.getUserByEmail(token.getName());
-
-        map.put("uid", u.getUid());
-        map.put("first_name", u.getFirst_name());
-        map.put("last_name", u.getLast_name());
-        map.put("email", u.getEmail());
-
-
-        System.out.println(u);
-        System.out.println(new Date(System.currentTimeMillis() + 1000));
-
-        String JwtToken = jwtTokenProvider.generateToken(token);
-
-        System.out.println("true");
-        map.put("token", JwtToken);
-
-        return new ResponseEntity(map, HttpStatus.OK);
-
-//                catch(Exception e){
-//                    System.out.println(8);
-//                    System.out.println(e);
-//                }
-//                
-//                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-
-    }
-
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody User u) {
         User tempUser = userService.getUserByEmail(u.getEmail());
