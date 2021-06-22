@@ -9,6 +9,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.*;
+import javax.transaction.Transactional;
+
 
 @Entity
 @Table(name = "user")

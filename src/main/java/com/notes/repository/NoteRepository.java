@@ -6,12 +6,16 @@
 package com.notes.repository;
 
 import com.notes.model.*;
+import java.util.Set;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
 public interface NoteRepository extends CrudRepository<Note,Integer> {
+
+      void deleteNoteByNid(int nid);
     
     
 }

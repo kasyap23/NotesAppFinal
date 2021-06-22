@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
+import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
  * @author Kasyap
  */
 @Service
+@Transactional
 public class NoteServiceImpl implements NoteService {
 
 
@@ -29,13 +31,16 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void delete(int uid, int nid) {
-        User user = userRepository.findById(uid).get();
-        Set<Note> notes = user.getNotes();
-        for (Note n : notes) {
-            if (n.getNote_id() == nid) {
-                noteRepository.deleteById(nid);
-            }
-        }
+//        User user = userRepository.findById(uid).get();
+//        Note note = noteRepository.findById(nid).get();
+//        
+//        Set<Note> notes = user.getNotes();
+//        
+//
+//        notes.remove(nid);
+//          noteRepository.deleteNoteWhereNote_IdAndUid(uid, nid);
+
+            noteRepository.deleteNoteByNid(nid);
     }
     
     @Override
