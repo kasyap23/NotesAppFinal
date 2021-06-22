@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Kasyap
  */
 @RestController
-@RequestMapping(value = "/notes",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/notes")
 public class NoteController {
     
     @Autowired
@@ -39,6 +37,9 @@ public class NoteController {
     }
     
     @GetMapping("/get/{uid}")
+    @RequestMapping( value = "/get/{uid}",
+                     method=RequestMethod.GET,
+                     produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllNotes(@PathVariable("uid") int uid)
     {
         Set<Note> notes = noteService.getNotesById(uid);
@@ -52,7 +53,8 @@ public class NoteController {
         noteService.saveOrUpdate(note, uid);
         return new ResponseEntity(HttpStatus.OK);
     }
-    @DeleteMapping("/delete/{uid}/{nid}")
+
+    @RequestMapping(value = "/delete/{uid}/{nid}",method=RequestMethod.DELETE)
     public ResponseEntity<?> deleteNotes(@PathVariable("uid") int uid, @PathVariable int nid)
     {
         noteService.delete(uid, nid);
