@@ -7,13 +7,11 @@ import javax.persistence.*;
 import java.io.*;
 import javax.transaction.Transactional;
 
-@Data
 @Entity
-@Transactional
 @Table(name = "note")
 @NoArgsConstructor
 public class Note implements Serializable {
-    boolean remainder;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter @Setter private int nid;
@@ -22,6 +20,7 @@ public class Note implements Serializable {
     @Getter @Setter private String content;
     @Getter @Setter private String created_date;
     @Getter @Setter private String remainder_date;
+    @Getter @Setter private boolean remainder;
     @ManyToOne
     @JoinColumn(name = "uid")
     @Setter
