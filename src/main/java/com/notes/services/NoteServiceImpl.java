@@ -11,19 +11,20 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 /**
  * @author Kasyap
  */
 @Service
-@RequiredArgsConstructor(onConstructor=@__(@Autowired))
 public abstract class NoteServiceImpl implements NoteService {
 
 
-
+    @Autowired
     NoteRepository noteRepository;
-
+    
+    @Autowired
     UserRepository userRepository;
 
     @Override

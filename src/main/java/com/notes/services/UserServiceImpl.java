@@ -2,18 +2,19 @@ package com.notes.services;
 
 import com.notes.model.*;
 import com.notes.repository.*;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
 
 @Service
-@RequiredArgsConstructor(onConstructor=@__(@Autowired))
 public class UserServiceImpl implements UserService {
 
-
+    @Autowired
     UserRepository userRepo;
-
+    
+    @Autowired
     NoteRepository noteRepo;
 
     @Override

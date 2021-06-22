@@ -1,4 +1,4 @@
-package com.notes;
+package com.notes.configuration;
 
 import com.notes.jwt.*;
 import org.springframework.beans.factory.annotation.*;
@@ -42,7 +42,7 @@ public class NotesSecurity extends WebSecurityConfigurerAdapter {
 
 
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
-
+        http.cors();
     }
 
     @Override

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.*;
 import java.util.*;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 //import com.notes.services.ServiceClass;
 //import org.springframework.security.authentication.AuthenticationToken;
@@ -22,18 +24,21 @@ import java.util.*;
 @RequestMapping(
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
+
+@AllArgsConstructor
 public class ClassController {
 
 
-    AuthenticationManager authenticationManager;
-
+    private final AuthenticationManager authenticationManager;
+    
+    @Autowired
     UserRepository userRepository;
 
-    UserService userService;
+    private final UserService userService;
 
-    MyUserDetailsService myUserDetailsService;
+    private final MyUserDetailsService myUserDetailsService;
 
-    JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
     PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();

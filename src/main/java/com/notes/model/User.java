@@ -12,9 +12,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "user")
-
-@NoArgsConstructor
-@Getter @Setter
+@NoArgsConstructor @Getter @Setter 
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_generator")

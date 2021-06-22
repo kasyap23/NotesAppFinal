@@ -9,7 +9,6 @@ import java.io.*;
 @Entity
 @Table(name = "note")
 @NoArgsConstructor
-
 public class Note implements Serializable {
     boolean remainder;
     @Id

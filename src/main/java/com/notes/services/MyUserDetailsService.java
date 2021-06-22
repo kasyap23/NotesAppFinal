@@ -7,6 +7,7 @@ package com.notes.services;
 
 import com.notes.model.User;
 import com.notes.repository.*;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.core.userdetails.*;
@@ -16,11 +17,10 @@ import org.springframework.stereotype.*;
  * @author Kasyap
  */
 @Service
-@RequiredArgsConstructor(onConstructor=@__(@Autowired))
 public class MyUserDetailsService implements UserDetailsService {
 
-
-    private UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public MyUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
