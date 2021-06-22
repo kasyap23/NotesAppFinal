@@ -5,14 +5,16 @@
  */
 package com.notes.services;
 
-import com.notes.tables.Note;
-import java.util.Set;
-import org.springframework.stereotype.Service;
+import com.notes.model.*;
+import org.springframework.stereotype.*;
+
+import java.util.*;
 
 /**
  *
  * @author Kasyap
  */
+
 
 public interface NoteService {
    public void delete(int uid,int nid);

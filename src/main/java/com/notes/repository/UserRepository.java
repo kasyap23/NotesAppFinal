@@ -5,13 +5,12 @@
  */
 package com.notes.repository;
 
+import com.notes.model.*;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.notes.tables.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User,Integer> {
     User getUserByEmail(String email);
-    
 }

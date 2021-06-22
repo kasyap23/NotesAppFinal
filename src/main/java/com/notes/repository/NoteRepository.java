@@ -5,12 +5,13 @@
  */
 package com.notes.repository;
 
+import com.notes.model.*;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.notes.tables.Note;
 
 @Repository
 public interface NoteRepository extends CrudRepository<Note,Integer> {
+    
     
 }

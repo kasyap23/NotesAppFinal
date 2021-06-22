@@ -5,20 +5,17 @@
  */
 package com.notes.jwt;
 
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.*;
+import org.springframework.security.core.context.*;
+import org.springframework.stereotype.*;
+import org.springframework.web.filter.*;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+
 /**
- *
  * @author Kasyap
  */
 @Component
@@ -32,18 +29,17 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 //        super(authenticationManager);
 //        jwtTokenProvider = tokenProvider;    
 //    }
-    
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         Authentication authentication = jwtTokenProvider.authenticateToken(request);
-        
-        if(authentication!=null && jwtTokenProvider.validateToken(request))
-        {
+
+        if (authentication != null && jwtTokenProvider.validateToken(request)) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        chain.doFilter(request,response); 
-         
+        chain.doFilter(request, response);
+
     }
 
-    
+
 }

@@ -5,9 +5,8 @@
  */
 package com.notes.services;
 
-import com.notes.tables.Note;
-import com.notes.tables.User;
-import java.util.Set;
+import com.notes.model.*;
+
 
 /**
  *

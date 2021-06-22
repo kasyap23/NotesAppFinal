@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.notes.controllers;
 
 import com.notes.services.NoteService;
 import com.notes.model.Note;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,29 +20,30 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Kasyap
  */
 @RestController
-@RequestMapping("/notes")
+@RequestMapping(value = "/notes",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class NoteController {
-    @Autowired
-    NoteService noteService;
-    @PostMapping("/{uid}")
+   NoteService noteService;
+    @PostMapping("/save/{uid}")
     public ResponseEntity<?> createNote(@PathVariable("uid") int uid,@RequestBody Note note)
     {
         noteService.saveOrUpdate(note,uid);
         return new ResponseEntity(HttpStatus.OK);
     }
-    @GetMapping("/{uid}")
+    @GetMapping("/get/{uid}")
     public ResponseEntity<?> getAllNotes(@PathVariable("uid") int uid)
     {
         Set<Note> notes = noteService.getNotesById(uid);
         return new ResponseEntity(notes,HttpStatus.OK);
     }
-    @PutMapping("/{uid}")
+    @PutMapping("/update/{uid}")
     public ResponseEntity<?> updateNotes(@PathVariable("uid") int uid,@RequestBody Note note)
     {
         noteService.saveOrUpdate(note, uid);
         return new ResponseEntity(HttpStatus.OK);
     }
-    @DeleteMapping("/{uid}/{nid}")
+    @DeleteMapping("/delete/{uid}/{nid}")
     public ResponseEntity<?> deleteNotes(@PathVariable("uid") int uid, @PathVariable int nid)
     {
         noteService.delete(uid, nid);

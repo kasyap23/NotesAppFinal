@@ -1,48 +1,38 @@
 package com.notes.services;
 
-import java.util.Optional;
-import java.util.Set;
+import com.notes.model.*;
+import com.notes.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.notes.repository.NoteRepository;
-import com.notes.repository.UserRepository;
-import com.notes.tables.Note;
-import com.notes.tables.User;
-import java.util.List;
 
 @Service
+@RequiredArgsConstructor(onConstructor=@__(@Autowired))
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	UserRepository userRepo;
-	@Autowired
-	NoteRepository noteRepo;
-        
-        @Override
-        public User getUserByEmail(String email)
-        {
-            Iterable<User> users = this.userRepo.findAll();
-            for(User u: users)
-            {
-                if(u.getEmail().equals(email))
-                {
-                    return u;
-                }
-            }
-            return null;
-            
+
+    UserRepository userRepo;
+
+    NoteRepository noteRepo;
+
+    @Override
+    public User getUserByEmail(String email) {
+        User user = this.userRepo.getUserByEmail(email);
+        if (user.getEmail().equals(email)) {
+            return user;
         }
+        return null;
+
+    }
 
 
-	public void saveUser(User user) {
-		userRepo.save(user);	
-	}
-        
-        public void deleteUser(User user)
-        {
-            userRepo.deleteById(user.getUid());
-        }
+    public void saveUser(User user) {
+        userRepo.save(user);
+    }
+
+    public void deleteUser(User user) {
+        userRepo.deleteById(user.getUid());
+    }
 
 }

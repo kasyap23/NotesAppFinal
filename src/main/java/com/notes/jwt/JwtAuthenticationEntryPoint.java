@@ -6,28 +6,23 @@
 package com.notes.jwt;
 
 
+import org.springframework.security.core.*;
+import org.springframework.security.web.*;
+import org.springframework.stereotype.*;
 
-import java.io.IOException;
-import java.io.Serializable;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
 
 /**
- *
  * @author Kasyap
  */
-@Component 
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint,Serializable {
+@Component
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
     @Override
-	public void commence(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException authException) throws IOException, ServletException {
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Unauthorized");
-	}
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+    }
 
 }

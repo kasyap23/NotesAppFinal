@@ -12,10 +12,9 @@ import org.springframework.security.core.Authentication;
 public class NotesApplication {
 
 	public static void main(String[] args) {
-            
+		System.out.println("Hello Deepak");
 		SpringApplication.run(NotesApplication.class, args);
-                
-                
+
 	}
 
 
