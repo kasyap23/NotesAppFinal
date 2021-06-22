@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
  * @author Kasyap
  */
 @Service
-public abstract class NoteServiceImpl implements NoteService {
+public class NoteServiceImpl implements NoteService {
 
 
     @Autowired
@@ -34,10 +34,10 @@ public abstract class NoteServiceImpl implements NoteService {
         for (Note n : notes) {
             if (n.getNote_id() == nid) {
                 noteRepository.deleteById(nid);
-
             }
         }
     }
+    
     @Override
     public Set<Note> getNotesById(int uid) {
         User user = userRepository.findById(uid).get();

@@ -11,10 +11,13 @@ import org.springframework.security.crypto.bcrypt.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.web.bind.annotation.*;
 
+import com.notes.model.JwtResponseToken;
+
 import java.security.*;
 import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 //import com.notes.services.ServiceClass;
 //import org.springframework.security.authentication.AuthenticationToken;
@@ -25,10 +28,10 @@ import lombok.NonNull;
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 
-@AllArgsConstructor
+@RequiredArgsConstructor(onConstructor=@__(@Autowired))
 public class ClassController {
 
-
+    
     private final AuthenticationManager authenticationManager;
     
     @Autowired
@@ -62,7 +65,7 @@ public class ClassController {
         final MyUserDetails userDetails = myUserDetailsService.loadUserByUsername(user.getEmail());
         final String token = jwtTokenProvider.generateToken(UPAuthToken);
 
-        return ResponseEntity.ok(new com.notes.model.JwtResponseToken(token));
+        return ResponseEntity.ok(new JwtResponseToken(token,userDetails.getUid()));
     }
 
     private UsernamePasswordAuthenticationToken authenticate(String username, String password) throws Exception {

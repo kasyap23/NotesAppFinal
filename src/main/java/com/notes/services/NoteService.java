@@ -15,7 +15,6 @@ import java.util.*;
  * @author Kasyap
  */
 
-
 public interface NoteService {
    public void delete(int uid,int nid);
    public Set<Note> getNotesById(int uid);

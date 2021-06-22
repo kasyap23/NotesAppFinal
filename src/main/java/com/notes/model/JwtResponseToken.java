@@ -1,18 +1,12 @@
 package com.notes.model;
 
 import java.io.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@AllArgsConstructor @Getter @Setter
 public class JwtResponseToken implements Serializable {
-
-
-    private final String jwttoken;
-
-    public JwtResponseToken(String jwttoken) {
-        this.jwttoken = jwttoken;
-    }
-
-    public String getToken() {
-        return this.jwttoken;
-    }
-
+    private String token;
+    private Integer uid;
 }

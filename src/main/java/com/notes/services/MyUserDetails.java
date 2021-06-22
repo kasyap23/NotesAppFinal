@@ -36,6 +36,10 @@ public class MyUserDetails implements UserDetails //implements UserDetailService
         // TODO Auto-generated method stub
         return Collections.singleton(new SimpleGrantedAuthority("USER"));
     }
+    
+    public Integer getUid(){
+        return user.getUid();
+    }
 
     @Override
     public String getPassword() {

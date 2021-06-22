@@ -24,13 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class NoteController {
-   NoteService noteService;
+    
+    @Autowired
+    NoteService noteService;
+    
     @PostMapping("/save/{uid}")
     public ResponseEntity<?> createNote(@PathVariable("uid") int uid,@RequestBody Note note)
     {
         noteService.saveOrUpdate(note,uid);
         return new ResponseEntity(HttpStatus.OK);
     }
+    
     @GetMapping("/get/{uid}")
     public ResponseEntity<?> getAllNotes(@PathVariable("uid") int uid)
     {

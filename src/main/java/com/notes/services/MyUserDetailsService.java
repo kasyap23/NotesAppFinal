@@ -31,6 +31,7 @@ public class MyUserDetailsService implements UserDetailsService {
 //        authorities.add(new SimpleGrantedAuthority("user"));
         return new MyUserDetails(user);
     }
+    
 
 
 }

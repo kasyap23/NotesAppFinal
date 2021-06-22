@@ -27,7 +27,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Note> notes;
 
-
     public User(int uid, String first_name, String last_name,
                 String email, String password, LinkedHashSet<Note> notes) {
         this.uid = uid;
@@ -37,8 +36,5 @@ public class User {
         this.password = password;
         this.notes = notes;
     }
-
-
-
 
 }
