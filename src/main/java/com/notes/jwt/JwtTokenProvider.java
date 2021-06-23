@@ -15,11 +15,13 @@ import org.springframework.stereotype.*;
 import javax.servlet.http.*;
 import java.util.*;
 import java.util.stream.*;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Kasyap
  */
 @Component
+@NoArgsConstructor
 public class JwtTokenProvider {
 
     private static String jwtSecret = "TestSigmaKeepSecret";
@@ -27,10 +29,6 @@ public class JwtTokenProvider {
     private static String jwtHeader = "Authorization";
 
     private static long jwtExpirationInMs = 36000000;
-
-    public JwtTokenProvider() {
-
-    }
 
     public Authentication authenticateToken(HttpServletRequest request) {
         String token = this.getToken(request);

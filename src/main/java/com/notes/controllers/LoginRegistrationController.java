@@ -29,13 +29,12 @@ import lombok.RequiredArgsConstructor;
         produces = MediaType.APPLICATION_JSON_VALUE)
 
 @RequiredArgsConstructor(onConstructor=@__(@Autowired))
-public class ClassController {
+public class LoginRegistrationController {
 
     
     private final AuthenticationManager authenticationManager;
     
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final UserService userService;
 
@@ -47,12 +46,11 @@ public class ClassController {
         return new BCryptPasswordEncoder();
     }
 
-    @GetMapping("/test")
-    public User test() {
-        return this.userRepository.getUserByEmail("deepak1@gmail.com");
-    }
 
-    @PostMapping("authenticate")
+
+    @RequestMapping(value="authenticate",method=RequestMethod.POST,
+                    consumes=MediaType.APPLICATION_JSON_VALUE
+                    )
     public ResponseEntity createAuthenticationToken(@RequestBody User user) throws Exception {
         UsernamePasswordAuthenticationToken UPAuthToken;
         try {
@@ -82,7 +80,9 @@ public class ClassController {
         }
     }
 
-    @PostMapping("/register")
+    @RequestMapping(value="/register",method=RequestMethod.POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE
+                    )
     public ResponseEntity register(@RequestBody User u) {
         User tempUser = userService.getUserByEmail(u.getEmail());
         if (tempUser != null) {
@@ -99,10 +99,7 @@ public class ClassController {
 
     }
 
-    @GetMapping("/home")
-    public String home() {
-        return "home.html";
-    }
+
 
 
 }

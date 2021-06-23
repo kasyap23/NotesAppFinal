@@ -5,10 +5,12 @@
  */
 package com.notes.controllers;
 
+
 import com.notes.DTO.*;
 import com.notes.model.*;
 import com.notes.repository.*;
 import com.notes.services.*;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
@@ -21,12 +23,14 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping(value = "/users")
+@RequiredArgsConstructor(onConstructor=@__(@Autowired))
 public class UserController {
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    UserService userService;
 
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final UserMapper userMapper;
+
+    /* Creating User*/
     @RequestMapping(value = "/save",method=RequestMethod.POST,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,7 +46,8 @@ public class UserController {
         System.out.println("user saved");
         return new ResponseEntity(HttpStatus.OK);
     }
-    @GetMapping("/get/{email}")
+    
+    /* Get User*/
     @RequestMapping(value = "/get/{email}",
                     method=RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,11 +57,12 @@ public class UserController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         ModelMapper modelMapper = new ModelMapper();
         User user = userService.getUserByEmail(email);
-        UserDTO userDTO = modelMapper.map(user,UserDTO.class);
+        UserDTO userDTO = userMapper.userToUserDto(user);
         return new ResponseEntity(userDTO,HttpStatus.OK);
         
     }
     
+    //Delete User
     @DeleteMapping("/delete/{email}")
     public ResponseEntity<?> deleteUser(@PathVariable("email")String email)
     {
@@ -65,6 +71,7 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
     
+    //Update User
     @RequestMapping(value = "/update/{email}",
         method=RequestMethod.PUT,
         consumes = MediaType.APPLICATION_JSON_VALUE,
