@@ -6,6 +6,12 @@
 package com.notes.services;
 
 import com.notes.model.*;
+import com.notes.repository.NoteRepository;
+import com.notes.repository.UserRepository;
+import javax.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -13,10 +19,32 @@ import com.notes.model.*;
  * @author Kasyap
  */
 
-public interface UserService {
-    public User getUserByEmail(String email);
+@Service
+@Transactional
+@RequiredArgsConstructor(onConstructor=@__(@Autowired))
+public class UserService {
 
-   public void saveUser(User user);
-   public void deleteUser(User user);
+    private final UserRepository userRepository;
+    private final NoteRepository noteRepository;
+
+
+    public User getUserByEmail(String email) {
+        User user = this.userRepository.getUserByEmail(email);
+        if(user == null)
+            return null;
+        if (user.getEmail().equals(email)) {
+            return user;
+        }
+        return null;
+    }
+
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    public void deleteUser(User user) {
+        userRepository.deleteById(user.getUid());
+    }
     
 }

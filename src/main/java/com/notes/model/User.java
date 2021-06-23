@@ -14,10 +14,10 @@ import javax.transaction.Transactional;
 
 @Entity
 @Table(name = "user")
-@NoArgsConstructor @Getter @Setter 
+@NoArgsConstructor @AllArgsConstructor @Getter @Setter 
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
     @SequenceGenerator(name = "user_generator", sequenceName = "user_seq")
      private int uid;
     @Column(unique = true, nullable = false)
@@ -28,15 +28,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Note> notes;
+    
 
-    public User(int uid, String first_name, String last_name,
-                String email, String password, LinkedHashSet<Note> notes) {
-        this.uid = uid;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.email = email;
-        this.password = password;
-        this.notes = notes;
-    }
 
 }

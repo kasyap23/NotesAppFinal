@@ -18,7 +18,7 @@ import java.util.*;
  * @author Kasyap
  */
 
-public class MyUserDetails implements UserDetails //implements UserDetailService 
+public class MyUserDetails implements UserDetails  
 {
     @Autowired
     User user;

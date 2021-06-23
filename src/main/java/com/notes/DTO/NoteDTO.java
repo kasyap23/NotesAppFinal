@@ -15,11 +15,11 @@ import lombok.Setter;
  *
  * @author Kasyap
  */
+@Getter @Setter
 public class NoteDTO {
-     @Getter @Setter private int note_id;
-     @Getter @Setter private String title,content,created_date,remainder_date;
-     @Getter @Setter boolean remainder;
-    @Setter
-    private User user;
+    private int nid;
+    private String title,content,created_date,remainder_date;
+    boolean remainder;
+    private int uid;
     
 }

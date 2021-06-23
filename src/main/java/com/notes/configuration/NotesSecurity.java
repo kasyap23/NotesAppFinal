@@ -1,6 +1,7 @@
 package com.notes.configuration;
 
 import com.notes.jwt.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.*;
@@ -17,15 +18,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor(onConstructor=@__(@Autowired))
 public class NotesSecurity extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private JwtAuthorizationFilter jwtAuthorizationFilter;
+    
+    private final JwtTokenProvider tokenProvider;
+    private final UserDetailsService userDetailsService;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
