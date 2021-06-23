@@ -18,17 +18,12 @@ public class Note implements Serializable {
     private int nid;
      
     private String title;
-<<<<<<< HEAD
+
     @Getter @Setter private String content;
     @Getter @Setter private String created_date;
     @Getter @Setter private String remainder_date;
     @Getter @Setter private boolean remainder;
-=======
-    private String content;
-    private String created_date;
-    private String remainder_date;
-    boolean remainder;
->>>>>>> main
+
     @ManyToOne
     @JoinColumn(name = "uid")
 
