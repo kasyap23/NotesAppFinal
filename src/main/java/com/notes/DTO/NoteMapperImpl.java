@@ -6,6 +6,7 @@
 package com.notes.DTO;
 
 import com.notes.model.Note;
+import com.notes.model.User;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,8 @@ public class NoteMapperImpl implements NoteMapper {
 
     @Override
     public NoteDTO noteToNoteDto(Note note) {
+        if(note==null)
+            return null;
         NoteDTO noteDto = new NoteDTO();
         noteDto.setNid(note.getNid());
         noteDto.setTitle(note.getTitle());
@@ -30,10 +33,27 @@ public class NoteMapperImpl implements NoteMapper {
         return noteDto;
     
     }
+    @Override
+    public Note noteDtoToNote(NoteDTO noteDto)
+    {
+        
+        Note note = new Note();
+ 
+        note.setNid(noteDto.getNid());
+        note.setTitle(noteDto.getTitle());
+        note.setContent(noteDto.getContent());
+//        note.setCreated_date(noteDto.getCreated_date());
+        note.setRemainder(noteDto.isRemainder());
+        note.setRemainder_date(noteDto.getRemainder_date());
+        User user = new User();
+        user.setUid(noteDto.getUid());
+        note.setUser(user);
+        return note;
+    }
 
     @Override
     public Set<NoteDTO> noteToNoteDto(Set<Note> notes) {
-        Set<NoteDTO> result = new LinkedHashSet<NoteDTO>();
+        Set<NoteDTO> result = new LinkedHashSet<>();
         notes.forEach(note -> {
             result.add(this.noteToNoteDto(note));
         });

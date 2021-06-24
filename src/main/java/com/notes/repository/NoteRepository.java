@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 public interface NoteRepository extends CrudRepository<Note,Integer> {
 
       void deleteNoteByNid(int nid);
-    
+      Note getNoteByNid(int nid);
+      Set<Note> getNoteByUser(User user);         
     
 }

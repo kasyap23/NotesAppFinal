@@ -31,7 +31,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     /* Creating User*/
-    @RequestMapping(value = "/save",method=RequestMethod.POST,
+    @RequestMapping(value = "/",method=RequestMethod.POST,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createUser(@RequestBody User user)
@@ -48,7 +48,7 @@ public class UserController {
     }
     
     /* Get User*/
-    @RequestMapping(value = "/get/{email}",
+    @RequestMapping(value = "/{email}",
                     method=RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUser(@PathVariable("email") String email)
@@ -63,7 +63,7 @@ public class UserController {
     }
     
     //Delete User
-    @DeleteMapping("/delete/{email}")
+    @DeleteMapping("/{email}")
     public ResponseEntity<?> deleteUser(@PathVariable("email")String email)
     {
         User user = userService.getUserByEmail(email);
@@ -72,7 +72,7 @@ public class UserController {
     }
     
     //Update User
-    @RequestMapping(value = "/update/{email}",
+    @RequestMapping(value = "/{email}",
         method=RequestMethod.PUT,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)

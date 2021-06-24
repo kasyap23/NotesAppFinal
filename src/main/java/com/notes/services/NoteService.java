@@ -28,11 +28,15 @@ public class NoteService {
     private final UserRepository userRepository;
 
 
-    public void delete(int uid, int nid) {
+    public void delete(int nid) {
             noteRepository.deleteNoteByNid(nid);
     }
     
-
+    public Note getNoteByNid(int nid)
+    {
+        Note note = noteRepository.getNoteByNid(nid);
+        return note;
+    }
     public Set<Note> getNotesById(int uid) {
         User user = userRepository.findById(uid).get();
         Set<Note> notes = user.getNotes();
@@ -41,14 +45,31 @@ public class NoteService {
     }
 
 
-    public void saveOrUpdate(Note note, int uid) {
-        Optional<User> userOptional = userRepository.findById(uid);
+    public void update(Note note) {
+        Optional<User> userOptional = userRepository.findById(note.getUser().getUid());
         if (!userOptional.isPresent()) {
             return;
+        }
+        note.setUser(userOptional.get());
+        noteRepository.save(note);
+    }
+    public void save(Note note) throws Exception
+    {
+        Optional<User> userOptional = userRepository.findById(note.getUser().getUid());
+        if(!userOptional.isPresent())
+        {
+            throw new Exception("User Not found");
+            
         }
         User userData = userOptional.get();
         note.setUser(userData);
         noteRepository.save(note);
+            
+    }
+
+    public Set<Note> getNoteByUser(User user) {
+        Set<Note> notes = noteRepository.getNoteByUser(user);
+        return notes;
     }
     
 }

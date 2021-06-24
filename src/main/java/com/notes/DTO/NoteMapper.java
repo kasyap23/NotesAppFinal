@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.Mapping;
 public interface NoteMapper {
     
     NoteDTO noteToNoteDto(Note note);
+    Note noteDtoToNote(NoteDTO noteDto);
     Set<NoteDTO> noteToNoteDto(Set<Note> notes);
     
 }

@@ -6,6 +6,7 @@
 package com.notes.DTO;
 
 import com.notes.model.User;
+import java.util.Date;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.Getter;
@@ -18,7 +19,8 @@ import lombok.Setter;
 @Getter @Setter
 public class NoteDTO {
     private int nid;
-    private String title,content,created_date,remainder_date;
+    private String title,content,remainder_date;
+    private Date created_date;
     boolean remainder;
     private int uid;
     
